@@ -7,6 +7,13 @@ A tool to make .env.example
 $ go get github.com/ikedaosushi/envexample
 ```
 
+If you want to update
+
+```
+$ go get -u github.com/ikedaosushi/envexample
+```
+
+
 ## Usage
 
 Let's say you have a .env file following.

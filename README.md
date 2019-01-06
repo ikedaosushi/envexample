@@ -52,3 +52,11 @@ or
 ```
 $ envexample .myenv .myenv.sample
 ```
+
+## Option
+
+If you use `--stdout`, you get .env.example result on StdOut instead of file.
+
+```
+$ envexample --stdout
+```

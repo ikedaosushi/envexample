@@ -30,13 +30,16 @@ func Write(path string, content string) {
 	}
 }
 
-func Run(filePath string, exampleFilePath string) {
+func Run(filePath string, exampleFilePath string, isStdout bool) {
 	content := Read(filePath)
 	// Note about regex: https://stackoverflow.com/questions/43723905/go-regex-to-match-all-lines-that-dont-start-with-timestamp
 	rep := regexp.MustCompile(`(?m)\s*^([^=#]+=)([^=#\n]*).*$`)
 	content = rep.ReplaceAllString(content, "\n$1")
-	fmt.Println(string(content))
-	Write(exampleFilePath, content)
+	if isStdout {
+		fmt.Println(string(content))
+	} else {
+		Write(exampleFilePath, content)
+	}
 }
 
 func Action(c *cli.Context) error {
@@ -48,7 +51,8 @@ func Action(c *cli.Context) error {
 	if exampleFilePath == "" {
 		exampleFilePath = defaultEnvExamplePath
 	}
-	Run(filePath, exampleFilePath)
+	isStdout := c.Bool("stdout")
+	Run(filePath, exampleFilePath, isStdout)
 	return nil
 }
 
@@ -63,6 +67,9 @@ func main() {
 			Name:  "ikedaosushi",
 			Email: "ikeda.yutaro@gmail.com",
 		},
+	}
+	app.Flags = []cli.Flag{
+		cli.BoolFlag{Name: "stdout"},
 	}
 
 	app.Action = Action
